@@ -1,0 +1,63 @@
+body {
+    background-color: #0a0a0f;
+    color: #e2e8f0;
+}
+
+.neon-text-fuchsia {
+    text-shadow: 0 0 5px #d946ef, 0 0 15px #d946ef, 0 0 30px #d946ef;
+}
+
+.neon-text-cyan {
+    text-shadow: 0 0 5px #22d3ee, 0 0 15px #22d3ee;
+}
+
+.neon-border-fuchsia {
+    box-shadow: 0 0 10px #d946ef, inset 0 0 10px #d946ef;
+    border-color: #d946ef;
+}
+
+.neon-border-cyan {
+    box-shadow: 0 0 10px #22d3ee, inset 0 0 10px #22d3ee;
+    border-color: #22d3ee;
+}
+
+.neon-text-bronze {
+    text-shadow: 0 0 5px #c5832b, 0 0 15px #c5832b;
+}
+
+.neon-border-bronze {
+    box-shadow: 0 0 10px #c5832b, inset 0 0 10px #c5832b;
+    border-color: #c5832b;
+}
+
+.hover-neon-bronze:hover {
+    box-shadow: 0 0 20px #c5832b, inset 0 0 15px #c5832b;
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+}
+
+.hover-neon-fuchsia:hover {
+    box-shadow: 0 0 20px #d946ef, inset 0 0 15px #d946ef;
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+}
+
+.hover-neon-cyan:hover {
+    box-shadow: 0 0 20px #22d3ee, inset 0 0 15px #22d3ee;
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+}
+
+.bg-grid-pattern {
+    background-image: 
+        linear-gradient(to right, rgba(74, 0, 114, 0.1) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(74, 0, 114, 0.1) 1px, transparent 1px);
+    background-size: 40px 40px;
+}
+
+.glass-panel {
+    background: rgba(20, 15, 30, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(217, 70, 239, 0.2);
+}
