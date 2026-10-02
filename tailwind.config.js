@@ -1,4 +1,10 @@
-tailwind.config = {
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+    content: [
+        './index.html',
+        './menu.html',
+        './js/*.js',
+    ],
     theme: {
         extend: {
             fontFamily: {
@@ -15,5 +21,6 @@ tailwind.config = {
                 }
             }
         }
-    }
+    },
+    plugins: [],
 }

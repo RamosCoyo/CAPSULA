@@ -1,5 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
-    
+    // Evita la inicialización doble si el script llega a cargarse más de una vez
+    if (window.__capsulaMenuInit) return;
+    window.__capsulaMenuInit = true;
+
     // --- ÍCONOS SVG ---
     const iconBurger = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-full h-full text-capsula-bronze drop-shadow-[0_0_15px_rgba(197,131,43,0.5)]"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 10c0-4.4 3.6-8 8-8s8 3.6 8 8H4z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 13h18"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16h16v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2z"></path></svg>`;
     const iconWings = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-full h-full text-red-500 drop-shadow-[0_0_15px_rgba(239,68,68,0.5)]"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z"></path></svg>`;
@@ -71,17 +74,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnNext = document.getElementById('btn-next');
 
     let currentIndex = 0;
+    let updateTimer = null;
 
     const generateStars = (score) => {
         let starsHTML = '';
         for (let i = 1; i <= 5; i++) {
             if (i <= score) {
-                starsHTML += `<svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`;
+                starsHTML += `<svg class="w-6 h-6 fill-current" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`;
             } else {
-                starsHTML += `<svg class="w-6 h-6 stroke-current fill-transparent opacity-30" viewBox="0 0 24 24"><path stroke-width="1.5" stroke-linejoin="round" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`;
+                starsHTML += `<svg class="w-6 h-6 stroke-current fill-transparent opacity-30" viewBox="0 0 24 24" aria-hidden="true"><path stroke-width="1.5" stroke-linejoin="round" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`;
             }
         }
         return starsHTML;
+    };
+
+    const setStat = (container, score, label) => {
+        if (!container) return;
+        container.innerHTML = generateStars(score);
+        container.setAttribute('role', 'img');
+        container.setAttribute('aria-label', `${label}: ${score} de 5`);
     };
 
     const selectCharacter = (index) => {
@@ -90,30 +101,37 @@ document.addEventListener('DOMContentLoaded', () => {
         currentIndex = index;
         const item = menuItems[index];
 
-        itemImage.style.opacity = '0';
-        setTimeout(() => {
+        // En el primer render no hay nada que ocultar (evita el parpadeo inicial).
+        // Además se cancela el timeout anterior para clics rápidos en el roster.
+        const isFirstRender = !itemImage.innerHTML.trim();
+        clearTimeout(updateTimer);
+        if (!isFirstRender) itemImage.style.opacity = '0';
+
+        updateTimer = setTimeout(() => {
             if(itemName) itemName.textContent = item.name;
             if(itemDesc) itemDesc.textContent = item.desc;
             if(itemPrice) itemPrice.textContent = item.price;
             if(itemImage) itemImage.innerHTML = item.svg;
             
-            if(statSabor) statSabor.innerHTML = generateStars(item.sabor);
-            if(statPicor) statPicor.innerHTML = generateStars(item.picor);
-            if(statMonchoso) statMonchoso.innerHTML = generateStars(item.monchoso);
+            setStat(statSabor, item.sabor, 'Sabor');
+            setStat(statPicor, item.picor, 'Picor');
+            setStat(statMonchoso, item.monchoso, 'Monchosidad');
             
             if(itemImage) itemImage.style.opacity = '1';
-        }, 150);
+        }, isFirstRender ? 0 : 150);
 
         // Actualizar estados visuales de los cuadros
         document.querySelectorAll('.roster-box').forEach(box => {
             box.classList.remove('border-capsula-fuchsia', 'neon-border-fuchsia', 'scale-110');
             box.classList.add('border-gray-700', 'opacity-50');
+            box.setAttribute('aria-pressed', 'false');
         });
         
         const activeBox = document.getElementById(`roster-${item.id}`);
         if (activeBox && rosterContainer) {
             activeBox.classList.remove('border-gray-700', 'opacity-50');
             activeBox.classList.add('border-capsula-fuchsia', 'neon-border-fuchsia', 'scale-110');
+            activeBox.setAttribute('aria-pressed', 'true');
             
             // FÓRMULA DE CENTRADO EXACTO (REEMPLAZA scrollIntoView)
             // Esto calcula matemáticamente el centro del contenedor para cualquier elemento
@@ -134,13 +152,18 @@ document.addEventListener('DOMContentLoaded', () => {
         leftSpacer.className = 'flex-shrink-0 w-[calc(50%-40px)] md:w-[calc(50%-48px)] pointer-events-none';
         rosterContainer.appendChild(leftSpacer);
 
-        // Elementos del menú
+        // Elementos del menú (botones nativos: accesibles con teclado sin código extra)
         menuItems.forEach((item, index) => {
-            const box = document.createElement('div');
+            const box = document.createElement('button');
+            box.type = 'button';
             box.id = `roster-${item.id}`;
-            box.className = `roster-box w-20 h-20 md:w-24 md:h-24 flex-shrink-0 glass-panel border-2 border-gray-700 rounded-lg cursor-pointer flex items-center justify-center p-4 transition-all duration-300 opacity-50 hover:opacity-100 hover:border-capsula-cyan`;
+            box.className = `roster-box w-20 h-20 md:w-24 md:h-24 flex-shrink-0 glass-panel border-2 border-gray-700 rounded-lg cursor-pointer flex items-center justify-center p-4 transition-[border-color,opacity,transform] duration-300 opacity-50 hover:opacity-100 hover:border-capsula-cyan`;
             box.innerHTML = item.svg; 
-            
+
+            // Accesibilidad: nombre accesible + estado de selección
+            box.setAttribute('aria-label', `Seleccionar ${item.name}`);
+            box.setAttribute('aria-pressed', 'false');
+
             box.addEventListener('click', () => selectCharacter(index));
             rosterContainer.appendChild(box);
         });

@@ -5,22 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Selecciona tu Favorito - CAPSULABITS</title>
 
+    <!-- SEO -->
+    <meta name="description" content="Elige tu platillo favorito en CAPSULABITS: burgers, alitas, nachos, cócteles y más con estilo arcade.">
+    <meta name="theme-color" content="#0a0a0f">
+
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="./Recursos/icono.ico">
 
-    <!-- Tailwind CSS & Config -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="./js/tailwind-config.js"></script>
-
-    <!-- Estilos Base y Fuentes -->
-    <link rel="stylesheet" href="./css/estilos.css">
+    <!-- Fuentes de Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS compilado (generar con: npm run build) + estilos propios -->
+    <link rel="stylesheet" href="./css/styles.css">
+    <link rel="stylesheet" href="./css/estilos.css">
 </head>
 <body class="bg-capsula-dark bg-grid-pattern min-h-screen flex flex-col items-center justify-center py-10">
 
     <!-- Botón de Regreso -->
 <a href="./index.html" class="absolute top-6 left-6 text-capsula-cyan hover:text-white flex items-center gap-2 font-display uppercase tracking-widest transition-colors z-50">
-    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
     Volver a la Base
 </a>
 
@@ -53,9 +58,9 @@
         </div>
 
         <!-- Centro: IMAGEN DEL PERSONAJE -->
-        <div class="flex flex-col items-center justify-center order-1 lg:order-2 h-[300px] lg:h-[400px] relative">
+        <div class="flex flex-col items-center justify-center order-1 lg:order-2 min-h-[300px] lg:min-h-[400px] relative">
             <div class="absolute inset-0 bg-capsula-fuchsia rounded-full blur-[80px] opacity-20 pointer-events-none animate-pulse"></div>
-            <h2 id="item-name" class="absolute -top-10 font-display text-3xl font-bold text-white uppercase neon-text-fuchsia z-20 text-center w-max">Burger Clásica</h2>
+            <h2 id="item-name" aria-live="polite" class="absolute -top-10 font-display text-2xl sm:text-3xl font-bold text-white uppercase neon-text-fuchsia z-20 text-center w-full px-4 break-words">Burger Clásica</h2>
             
             <div id="item-image" class="w-48 h-48 lg:w-72 lg:h-72 text-white z-10 drop-shadow-[0_0_20px_rgba(217,70,239,0.5)] transition-transform duration-300 hover:scale-110">
                 <!-- SVG Dinámico -->
@@ -78,12 +83,11 @@
     </div>
 
     <!-- Abajo: ROSTER DE SELECCIÓN -->
-    <!-- Abajo: ROSTER DE SELECCIÓN -->
     <div class="w-full max-w-5xl flex items-center justify-between gap-4 md:gap-6">
         
         <!-- Flecha Izquierda -->
-        <button id="btn-prev" class="text-capsula-fuchsia hover:text-white transition-transform hover:-translate-x-2 focus:outline-none shrink-0">
-            <svg class="w-12 h-12 md:w-16 md:h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+        <button id="btn-prev" type="button" aria-label="Platillo anterior" class="text-capsula-fuchsia hover:text-white transition-transform hover:-translate-x-2 shrink-0">
+            <svg class="w-12 h-12 md:w-16 md:h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
         </button>
         
         <!-- Cuadros de selección -->
@@ -96,15 +100,12 @@
         </div>
 
         <!-- Flecha Derecha -->
-        <button id="btn-next" class="text-capsula-fuchsia hover:text-white transition-transform hover:translate-x-2 focus:outline-none shrink-0">
-            <svg class="w-12 h-12 md:w-16 md:h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+        <button id="btn-next" type="button" aria-label="Siguiente platillo" class="text-capsula-fuchsia hover:text-white transition-transform hover:translate-x-2 shrink-0">
+            <svg class="w-12 h-12 md:w-16 md:h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
         </button>
     </div>
 </div>
 
 <script src="./js/menu-select.js"></script>
-
-    <!-- Script de Selección de Personajes -->
-    <script src="./js/menu-select.js"></script>
 </body>
 </html>
