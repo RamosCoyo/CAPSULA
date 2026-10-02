@@ -132,12 +132,14 @@ document.addEventListener('DOMContentLoaded', () => {
             activeBox.classList.remove('border-gray-700', 'opacity-50');
             activeBox.classList.add('border-capsula-fuchsia', 'neon-border-fuchsia', 'scale-110');
             activeBox.setAttribute('aria-pressed', 'true');
-            
-            // FÓRMULA DE CENTRADO EXACTO (REEMPLAZA scrollIntoView)
-            // Esto calcula matemáticamente el centro del contenedor para cualquier elemento
-            const scrollLeftTarget = activeBox.offsetLeft - (rosterContainer.clientWidth / 2) + (activeBox.offsetWidth / 2);
+
+            // Centrado exacto: se compara el centro del cuadro con el centro del
+            // contenedor (funciona igual en cualquier viewport, sin offsetLeft del body)
+            const containerRect = rosterContainer.getBoundingClientRect();
+            const boxRect = activeBox.getBoundingClientRect();
+            const delta = (boxRect.left + boxRect.width / 2) - (containerRect.left + containerRect.width / 2);
             rosterContainer.scrollTo({
-                left: scrollLeftTarget,
+                left: rosterContainer.scrollLeft + delta,
                 behavior: 'smooth'
             });
         }

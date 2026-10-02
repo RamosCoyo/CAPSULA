@@ -32,7 +32,8 @@ npm install
 # 2. Compilar el CSS
 npm run build
 
-# 3. Ver el sitio (VS Code Live Server en el puerto 5501, o el servidor que prefieras)
+# 3. Levantar el servidor local (http://localhost:8080)
+npm start
 ```
 
 Para recompilar automáticamente al guardar cambios:
@@ -43,8 +44,26 @@ npm run dev
 
 > **Importante:** después de agregar o modificar clases Tailwind en el HTML/JS, ejecuta `npm run build` (o deja `npm run dev` corriendo). Si un estilo no aparece, casi siempre es porque falta recompilar.
 
+## Verificaciones automatizadas
+
+Con el servidor corriendo (`npm start`), en otra terminal:
+
+```bash
+# Responsive: scroll horizontal y elementos fuera del viewport
+# en 320/360/390/768/1280 px (ambas páginas). Capturas en /tmp/opencode/shots
+npm run check:responsive
+
+# Funcional: menú hamburguesa, flechas del roster, anclas,
+# botón de pausa del carrusel, foco y teclado
+npm run check:functional
+
+# Ambas
+npm run check
+```
+
 ## Checklist después de cambios
 
 - [ ] `npm run build` ejecutado
+- [ ] `npm run check` en verde
 - [ ] Probar en móvil (~360px) que no haya scroll horizontal
 - [ ] Probar el menú hamburguesa y el selector de platillos con teclado (Tab + Enter)
